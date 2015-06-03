@@ -11,12 +11,15 @@
             "js": ["jquery-2.1.4.min.js", "agario-serverselect.js"]
         }
     ],
-    "permissions":[
+    "permissions": [
         "http://m.agar.io/"
     ],
   
     "icons":
     {
-        "48":"icon.png"
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
     }
 }
