@@ -1,22 +1,22 @@
 {
-  "manifest_version": 2,
-  "name": "Agar.io Server Select",
-  "description": "This extension enables server select on agar.io!",
-  "version": "0.1",
-  "author": "Marc Sleegers",
-  "content_scripts":
-  [
-    {
-      "matches": ["http://agar.io/"],
-      "js": ["jquery-2.1.4.min.js", "agario-serverselect.js"]
-    }
-  ],
-  "permissions":[
-    "http://m.agar.io/"
-  ],
+    "manifest_version": 2,
+    "name": "Agar.io Server Select",
+    "version": "1.0",
+    "description": "This extension allows you to input and copy a server ip on agar.io so you can easily play with your friends.",
+    "author": "marcardioid",
+    "content_scripts":
+    [
+        {
+            "matches": ["http://agar.io/"],
+            "js": ["jquery-2.1.4.min.js", "agario-serverselect.js"]
+        }
+    ],
+    "permissions":[
+        "http://m.agar.io/"
+    ],
   
-  "icons":
-  {
-    "48":"icon.png"
-  }
+    "icons":
+    {
+        "48":"icon.png"
+    }
 }
