@@ -7,8 +7,8 @@ Allows you to enter a different ip so you can easily connect to the session your
 Hides a lot of the websocket and session tech end users might find difficult to deal with to simplify the connection process.
 
 #### Chrome
-The source of the Chrome browser extension is available in `Agar.io-ServerSelect/Chrome`.<br>
-The extension is currently undergoing verification by Google and will be available on the Chrome Web Store soon.
+<a href="https://chrome.google.com/webstore/detail/agario-server-select/paohkendcmmeaognjfdjefjhhgfeljpk">Add it to Google Chrome</a> by downloading the extension from the Web Store.<br>
+The source of the Chrome browser extension is available in `Agar.io-ServerSelect/Chrome`.
 
 #### Firefox
 The basic JavaScript has been ported to a <a href="https://addons.mozilla.org/en-us/firefox/addon/greasemonkey/">Greasemonkey</a> userscript for Firefox users.<br>
