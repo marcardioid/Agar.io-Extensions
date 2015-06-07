@@ -13,3 +13,6 @@ The source of the Chrome browser extension is available in `Agar.io-ServerSelect
 #### Firefox
 The basic JavaScript has been ported to a <a href="https://addons.mozilla.org/en-us/firefox/addon/greasemonkey/">Greasemonkey</a> userscript for Firefox users.<br>
 A standalone '.xpi'-extension will be developed if there is enough interest.
+
+### Agar.io Keyboard Controls
+WARNING: Currently does nothing but disable the input based on mouse movement and logging keyboard input to the console!
