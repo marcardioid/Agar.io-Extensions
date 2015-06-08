@@ -3,54 +3,85 @@ $("document").ready(function () {
 })
 
 function modifyControls() {
-    var canvas = document.getElementById('canvas'),
-        origin = {clientX: innerWidth / 2, clientY: innerHeight / 2},
-        controller = canvas.onmousemove,
+    var canvas = document.getElementById("canvas"),
+        origin = {clientX: window.innerWidth / 2, clientY: window.innerHeight / 2},
+        inputcontroller = canvas.onmousemove,
         old_onkeydown = window.onkeydown,
         old_onkeyup = window.onkeyup;
     
     //Disable mouse movement and stop the player from moving at start.
     canvas.onmousemove = null;
     canvas.onmousedown = null;
-    controller(origin);
+    inputcontroller(origin);
     
+    var keys = [];
     //Add listeners for keyboard input.
     window.onkeydown = function (k) {
-        //console.log("KEY: " + k.keyCode);
+        if (k.repeat) {return;}
         old_onkeydown(k);
-        newX = innerWidth / 2;
-        newY = innerHeight / 2;
-        switch(k.keyCode) {
-                case 37:
-                    //LEFT
-                    newX = -100000;
-                    break;
-                case 38:
-                    //UP
-                    newY = -100000;
-                    break;
-                case 39:
-                    //RIGHT
-                    newX = 100000;
-                    break;
-                case 40:
-                    //DOWN
-                    newY = 100000;
-                    break;
+        if (k.keyCode >= 37 && k.keyCode <= 40) {
+            keys[k.keyCode] = k.type == "keydown";
+            handleInput();
         }
-        controller({clientX: newX, clientY: newY});
     }
     window.onkeyup = function (k) {
+        //if (k.repeat) {return;}
         old_onkeyup(k);
-        controller(origin);
+        if (k.keyCode >= 37 && k.keyCode <= 40) {
+            keys[k.keyCode] = k.type == "keydown";
+            handleInput();
+        }
+    }
+
+    function handleInput() {
+        var maxX = window.innerWidth,
+            maxY = window.innerHeight,
+            dx = 0,
+            dy = 0;
+
+        if (keys[37]) {
+            //LEFT
+            dx = -1;
+        }
+        if (keys[38]) {
+            //UP
+            dy = -1;
+        }
+        if (keys[39]) {
+            //RIGHT
+            dx = 1;
+        }
+        if (keys[40]) {
+            //DOWN
+            dy = 1;
+        }
+
+        var x, y;
+        if (dx == -1) {
+            x = 0; 
+        } else if (dx == 1) {
+            x = maxX;
+        } else if (dx === 0) {
+            x = maxX / 2;
+        }
+        if (dy == -1) {
+            y = 0; 
+        } else if (dy == 1) {
+            y = maxY;
+        } else if (dy === 0) {
+            y = maxY / 2;
+        }
+
+        //Send input to game inputcontroller.
+        inputcontroller({clientX: x, clientY: y});
     }
     
     //Add listeners that stop movement when the window loses focus or is resized.
     window.addEventListener("blur", function() {
-        controller(origin); 
+        inputcontroller(origin); 
     }, true);
     window.addEventListener("resize", function() {
-        origin = {clientX: innerWidth / 2, clientY: innerHeight / 2};
-        controller(origin); 
+        origin = {clientX: window.innerWidth / 2, clientY: window.innerHeight / 2};
+        inputcontroller(origin); 
     }, true);
 }
