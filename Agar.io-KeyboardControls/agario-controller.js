@@ -75,7 +75,7 @@ function modifyControls() {
         inputcontroller({clientX: x, clientY: y});
         
         //TODO: Proper stopping!
-        //Hacky way to stop movement quickly.
+        //Hacky way to stop movement quickly!
         if (dx == 0 && dy == 0) {
             for (var i = 10; i > 0; i--) {
                 canvas.onmousedown({clientX: (window.innerWidth / 2) + i, clientY: (window.innerHeight / 2) + i});
