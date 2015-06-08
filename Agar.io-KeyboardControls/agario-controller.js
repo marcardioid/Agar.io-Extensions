@@ -11,7 +11,7 @@ function modifyControls() {
     
     //Disable mouse movement and stop the player from moving at start.
     canvas.onmousemove = null;
-    canvas.onmousedown = null;
+    //canvas.onmousedown = null;
     inputcontroller(origin);
     
     var keys = [];
@@ -25,7 +25,6 @@ function modifyControls() {
         }
     }
     window.onkeyup = function (k) {
-        //if (k.repeat) {return;}
         old_onkeyup(k);
         if (k.keyCode >= 37 && k.keyCode <= 40) {
             keys[k.keyCode] = k.type == "keydown";
@@ -61,19 +60,27 @@ function modifyControls() {
             x = 0; 
         } else if (dx == 1) {
             x = maxX;
-        } else if (dx === 0) {
+        } else {
             x = maxX / 2;
         }
         if (dy == -1) {
             y = 0; 
         } else if (dy == 1) {
             y = maxY;
-        } else if (dy === 0) {
+        } else {
             y = maxY / 2;
         }
 
         //Send input to game inputcontroller.
         inputcontroller({clientX: x, clientY: y});
+        
+        //TODO: Proper stopping!
+        //Hacky way to stop movement quickly.
+        if (dx == 0 && dy == 0) {
+            for (var i = 10; i > 0; i--) {
+                canvas.onmousedown({clientX: (window.innerWidth / 2) + i, clientY: (window.innerHeight / 2) + i});
+            }
+        }
     }
     
     //Add listeners that stop movement when the window loses focus or is resized.
