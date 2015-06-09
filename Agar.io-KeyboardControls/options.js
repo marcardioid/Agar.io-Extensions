@@ -1,3 +1,6 @@
+var keys = ['left', 'up', 'right', 'down', 'split', 'shoot'];
+var bindings = [];
+
 // Saves options to chrome.storage
 function save_options() {
     var keyLeft = document.getElementById('btn-left').textContent,
@@ -41,26 +44,42 @@ function restore_options() {
         document.getElementById('btn-down').textContent = items.keyDown;
         document.getElementById('btn-split').textContent = items.keySplit;
         document.getElementById('btn-shoot').textContent = items.keyShoot;
+        bindings.push(parseInt(items.keyLeft));bindings.push(parseInt(items.keyUp));bindings.push(parseInt(items.keyRight));
+        bindings.push(parseInt(items.keyDown));bindings.push(parseInt(items.keySplit));bindings.push(parseInt(items.keyShoot));
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('btn-save').addEventListener('click', save_options);
-document.getElementById('btn-left').addEventListener('click', function() { addButtonHandler('left'); });
-document.getElementById('btn-up').addEventListener('click', function() { addButtonHandler('up'); });
-document.getElementById('btn-right').addEventListener('click', function() { addButtonHandler('right'); });
-document.getElementById('btn-down').addEventListener('click', function() { addButtonHandler('down'); });
-document.getElementById('btn-split').addEventListener('click', function() { addButtonHandler('split'); });
-document.getElementById('btn-shoot').addEventListener('click', function() { addButtonHandler('shoot'); });
+
+keys.forEach(function(key) {
+    document.getElementById('btn-'+key).addEventListener('click', function() { addButtonHandler(key); });
+});
 
 function addButtonHandler(button) {
+    // Clear all current handlers!
+    keys.forEach(function(key) {
+        document.getElementById('btn-'+key+'-text').textContent = '';
+    });
     document.addEventListener('keydown', keydownHandler, false);
     document.getElementById('btn-'+button+'-text').textContent = "Press any key!";
+
     function keydownHandler(e) {
         var key = e.keyCode;
-        document.getElementById('btn-'+button).textContent = key;
-        //document.getElementById('btn-'+button).textContent = String.fromCharCode((96 <= key && key <= 105)? key-48 : key);
-        document.removeEventListener('keydown', keydownHandler, false);
-        document.getElementById('btn-'+button+'-text').textContent = '';
+        if (bindings.indexOf(key) > -1) {
+            document.removeEventListener('keydown', keydownHandler, false);
+            document.getElementById('btn-'+button+'-text').textContent = 'This key is already in use!';
+        }
+        else {
+            bindings.push(key);
+            document.getElementById('btn-'+button).textContent = key;
+            //document.getElementById('btn-'+button).textContent = String.fromCharCode((96 <= key && key <= 105)? key-48 : key);
+            document.removeEventListener('keydown', keydownHandler, false);
+            document.getElementById('btn-'+button+'-text').textContent = '';
+        }
+        document.getElementById('status').textContent = '';
+        bindings.forEach(function(binding) {
+            document.getElementById('status').textContent = document.getElementById('status').textContent + ' ' + binding;
+        });
     }
     setTimeout(function() {
         document.removeEventListener('keydown', keydownHandler, false);
