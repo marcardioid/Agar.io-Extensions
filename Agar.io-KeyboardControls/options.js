@@ -76,10 +76,6 @@ function addButtonHandler(button) {
             document.removeEventListener('keydown', keydownHandler, false);
             document.getElementById('btn-'+button+'-text').textContent = '';
         }
-        document.getElementById('status').textContent = '';
-        bindings.forEach(function(binding) {
-            document.getElementById('status').textContent = document.getElementById('status').textContent + ' ' + binding;
-        });
     }
     setTimeout(function() {
         document.removeEventListener('keydown', keydownHandler, false);
