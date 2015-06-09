@@ -1,11 +1,10 @@
 {
     "manifest_version": 2,
-    "name": "Agar.io Keyboard Controls",
+    "name": "Agar.io Keyboard Control",
     "version": "1.0",
     "description": "This extension allows you to play the agar.io webgame with your arrow keys.",
     "author": "marcardioid",
-    "content_scripts":
-    [
+    "content_scripts": [
         {
             "matches": ["http://agar.io/"],
             "js": ["jquery-2.1.4.min.js", "agario-controller.js"],
@@ -13,14 +12,19 @@
         }
     ],
     "permissions": [
-        "http://m.agar.io/"
+        "http://m.agar.io/",
+        "storage"
     ],
   
-    "icons":
-    {
+    "icons": {
         "16": "images/icon16.png",
         "32": "images/icon32.png",
         "48": "images/icon48.png",
         "128": "images/icon128.png"
+    },
+    "options_page": "options.html",
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true
     }
 }
