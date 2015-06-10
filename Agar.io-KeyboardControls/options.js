@@ -1,7 +1,7 @@
 var keys = ['left', 'up', 'right', 'down', 'split', 'shoot'];
 var bindings = [];
 
-// Saves options to chrome.storage
+//Saves options to chrome.storage
 function save_options() {
     var keyLeft = document.getElementById('btn-left').textContent,
         keyUp = document.getElementById('btn-up').textContent,
@@ -27,7 +27,7 @@ function save_options() {
     });
 }
 
-// Restores states using the preferences stored in chrome.storage
+//Restores states using the preferences stored in chrome.storage
 function restore_options() {
     // Use default values if there isn't a save available
     chrome.storage.sync.get({
@@ -70,6 +70,7 @@ function addButtonHandler(button) {
             document.getElementById('btn-'+button+'-text').textContent = 'This key is already in use!';
         }
         else {
+            bindings.splice(bindings.indexOf(parseInt(document.getElementById('btn-'+button).textContent)), 1);
             bindings.push(key);
             document.getElementById('btn-'+button).textContent = key;
             //document.getElementById('btn-'+button).textContent = String.fromCharCode((96 <= key && key <= 105)? key-48 : key);

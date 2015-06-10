@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Agar.io Keyboard Control",
     "version": "1.0",
-    "description": "This extension allows you to play the agar.io webgame with your arrow keys.",
+    "description": "Play agar.io with your keyboard. Configurate your own bindings in the options pane.",
     "author": "marcardioid",
     "content_scripts": [
         {

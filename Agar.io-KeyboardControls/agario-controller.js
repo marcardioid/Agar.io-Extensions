@@ -1,34 +1,73 @@
-$("document").ready(function () {
-    $("#playBtn").attr("onclick", "(" + modifyControls + ")()");
+$(document).ready(function () {
+    //Restores states using the preferences stored in chrome.storage
+    //Use default values if there isn't a save available
+    chrome.storage.sync.get({
+        keyLeft: 37,
+        keyUp: 38,
+        keyRight: 39,
+        keyDown: 40,
+        keySplit: 32,
+        keyShoot: 87
+    }, function(items) {
+        var keybinds = {};
+        keybinds["left"] = parseInt(items.keyLeft);
+        keybinds["up"] = parseInt(items.keyUp);
+        keybinds["right"] = parseInt(items.keyRight);
+        keybinds["down"] = parseInt(items.keyDown);
+        keybinds["split"] = parseInt(items.keySplit);
+        keybinds["shoot"] = parseInt(items.keyShoot);
+        //TODO: Fix this really messy code! Why is a jQuery .on click not working? Or passing a dict?
+        $("#playBtn").attr("onclick", "("+modifyControls+")("+keybinds.left+", "+keybinds.up+", "+keybinds.right+", "+keybinds.down+", "+keybinds.split+", "+keybinds.shoot+");");
+    });
 })
 
-function modifyControls() {
+function modifyControls(keyLeft, keyUp, keyRight, keyDown, keySplit, keyShoot) {
     var canvas = document.getElementById("canvas"),
         origin = {clientX: window.innerWidth / 2, clientY: window.innerHeight / 2},
         inputcontroller = canvas.onmousemove,
         old_onkeydown = window.onkeydown,
-        old_onkeyup = window.onkeyup;
+        old_onkeyup = window.onkeyup,
+        keybinds = {},
+        keybinds_array = [];
     
+    keybinds["left"] = keyLeft;
+    keybinds["up"] = keyUp;
+    keybinds["right"] = keyRight;
+    keybinds["down"] = keyDown;
+    keybinds["split"] = keySplit;
+    keybinds["shoot"] = keyShoot;
+    for (var kb in keybinds) {
+        keybinds_array.push(keybinds[kb]);
+    }
+
     //Disable mouse movement and stop the player from moving at start.
     canvas.onmousemove = null;
     //canvas.onmousedown = null;
     inputcontroller(origin);
-    
+
     var keys = [];
     //Add listeners for keyboard input.
-    window.onkeydown = function (k) {
-        if (k.repeat) {return;}
-        old_onkeydown(k);
-        if (k.keyCode >= 37 && k.keyCode <= 40) {
+    window.onkeydown = window.onkeyup = function (k) {
+        if (k.repeat && (k.type == "keydown" || k.keyCode == keybinds["split"] || k.keyCode == keybinds["shoot"])) {return;}
+        if (keybinds_array.indexOf(k.keyCode) > -1) {
             keys[k.keyCode] = k.type == "keydown";
-            handleInput();
+            if (k.keyCode == keybinds["split"]) {
+                old_onkeydown({keyCode: 32});
+                old_onkeyup({keyCode: 32});
+            }
+            else if (k.keyCode == keybinds["shoot"]) {
+                old_onkeydown({keyCode: 87});
+                old_onkeyup({keyCode: 87});
+            }
+            else {
+                handleInput();
+            }
         }
-    }
-    window.onkeyup = function (k) {
-        old_onkeyup(k);
-        if (k.keyCode >= 37 && k.keyCode <= 40) {
-            keys[k.keyCode] = k.type == "keydown";
-            handleInput();
+        else {
+            if (k.keyCode != 32 && k.keyCode != 87) {
+                old_onkeydown(k);
+                old_onkeyup(k);
+            }
         }
     }
 
@@ -38,19 +77,19 @@ function modifyControls() {
             dx = 0,
             dy = 0;
 
-        if (keys[37]) {
+        if (keys[keybinds["left"]]) {
             //LEFT
             dx = -1;
         }
-        if (keys[38]) {
+        if (keys[keybinds["up"]]) {
             //UP
             dy = -1;
         }
-        if (keys[39]) {
+        if (keys[keybinds["right"]]) {
             //RIGHT
             dx = 1;
         }
-        if (keys[40]) {
+        if (keys[keybinds["down"]]) {
             //DOWN
             dy = 1;
         }
@@ -73,7 +112,7 @@ function modifyControls() {
 
         //Send input to game inputcontroller.
         inputcontroller({clientX: x, clientY: y});
-        
+
         //TODO: Proper stopping!
         //Hacky way to stop movement quickly!
         if (dx == 0 && dy == 0) {
@@ -82,7 +121,7 @@ function modifyControls() {
             }
         }
     }
-    
+
     //Add listeners that stop movement when the window loses focus or is resized.
     window.addEventListener("blur", function() {
         inputcontroller(origin); 
