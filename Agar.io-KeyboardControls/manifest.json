@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "Agar.io Keyboard Control",
-    "version": "1.0",
-    "description": "Play agar.io with your keyboard. Configurate your own bindings in the options pane.",
+    "version": "1.1",
+    "description": "Play agar.io with your keyboard! Configure your own keybindings in the options pane.",
     "author": "marcardioid",
     "content_scripts": [
         {
