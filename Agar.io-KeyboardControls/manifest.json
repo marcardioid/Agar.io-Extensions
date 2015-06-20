@@ -12,7 +12,6 @@
         }
     ],
     "permissions": [
-        "http://m.agar.io/",
         "storage"
     ],
   

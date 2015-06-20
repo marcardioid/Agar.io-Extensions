@@ -16,7 +16,7 @@ $(document).ready(function () {
         keybinds["down"] = parseInt(items.keyDown);
         keybinds["split"] = parseInt(items.keySplit);
         keybinds["shoot"] = parseInt(items.keyShoot);
-        //TODO: Fix this really messy code! Why is a jQuery .on click not working? Or passing a dict?
+        //TODO: Fix this messy code! Why is a jQuery .on click not working? Or passing a dict?
         $("#playBtn").attr("onclick", "("+modifyControls+")("+keybinds.left+", "+keybinds.up+", "+keybinds.right+", "+keybinds.down+", "+keybinds.split+", "+keybinds.shoot+");");
     });
 })
@@ -42,7 +42,7 @@ function modifyControls(keyLeft, keyUp, keyRight, keyDown, keySplit, keyShoot) {
 
     //Disable mouse movement and stop the player from moving at start.
     canvas.onmousemove = null;
-    //canvas.onmousedown = null;
+    //canvas.onmousedown = null; //Keep onmousedown enabled, because stopping is easier using this event.
     inputcontroller(origin);
 
     var keys = [];
@@ -110,11 +110,10 @@ function modifyControls(keyLeft, keyUp, keyRight, keyDown, keySplit, keyShoot) {
             y = maxY / 2;
         }
 
-        //Send input to game inputcontroller.
+        //Send input to game inputcontroller
         inputcontroller({clientX: x, clientY: y});
 
-        //TODO: Proper stopping!
-        //Hacky way to stop movement quickly!
+        //Stop using the onmousedown event
         if (dx == 0 && dy == 0) {
             for (var i = 10; i > 0; i--) {
                 canvas.onmousedown({clientX: (window.innerWidth / 2) + i, clientY: (window.innerHeight / 2) + i});
@@ -122,7 +121,7 @@ function modifyControls(keyLeft, keyUp, keyRight, keyDown, keySplit, keyShoot) {
         }
     }
 
-    //Add listeners that stop movement when the window loses focus or is resized.
+    //Add listeners that stop movement when the window loses focus or is resized
     window.addEventListener("blur", function() {
         inputcontroller(origin); 
     }, true);
