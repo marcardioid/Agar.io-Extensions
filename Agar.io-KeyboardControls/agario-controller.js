@@ -16,8 +16,7 @@ $(document).ready(function () {
         keybinds["down"] = parseInt(items.keyDown);
         keybinds["split"] = parseInt(items.keySplit);
         keybinds["shoot"] = parseInt(items.keyShoot);
-        //TODO: Fix this messy code! Why is a jQuery .on click not working? Or passing a dict?
-        $("#playBtn").attr("onclick", "("+modifyControls+")("+keybinds.left+", "+keybinds.up+", "+keybinds.right+", "+keybinds.down+", "+keybinds.split+", "+keybinds.shoot+");");
+        $("form").attr("onclick", "("+modifyControls+")("+keybinds.left+", "+keybinds.up+", "+keybinds.right+", "+keybinds.down+", "+keybinds.split+", "+keybinds.shoot+");");
     });
 })
 
@@ -29,7 +28,6 @@ function modifyControls(keyLeft, keyUp, keyRight, keyDown, keySplit, keyShoot) {
         old_onkeyup = window.onkeyup,
         keybinds = {},
         keybinds_array = [];
-    
     keybinds["left"] = keyLeft;
     keybinds["up"] = keyUp;
     keybinds["right"] = keyRight;
