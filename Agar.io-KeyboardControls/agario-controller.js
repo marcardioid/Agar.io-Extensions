@@ -45,8 +45,7 @@ function modifyControls(keyLeft, keyUp, keyRight, keyDown, keySplit, keyShoot) {
 
     var keys = [];
     //Add listeners for keyboard input.
-    window.onkeydown = window.onkeyup = function (k) {
-        if (k.repeat && (k.type == "keydown" || k.keyCode == keybinds["split"] || k.keyCode == keybinds["shoot"])) {return;}
+    window.onkeydown = function (k) {
         if (keybinds_array.indexOf(k.keyCode) > -1) {
             keys[k.keyCode] = k.type == "keydown";
             if (k.keyCode == keybinds["split"]) {
@@ -63,7 +62,20 @@ function modifyControls(keyLeft, keyUp, keyRight, keyDown, keySplit, keyShoot) {
         }
         else {
             if (k.keyCode != 32 && k.keyCode != 87) {
-                old_onkeydown(k);
+                old_onkeyup(k);
+            }
+        }
+    }
+    
+    window.onkeyup = function (k) {
+        if (keybinds_array.indexOf(k.keyCode) > -1) {
+            keys[k.keyCode] = k.type == "keydown";
+            if (k.keyCode != keybinds["split"] && k.keyCode != keybinds["shoot"]){
+                handleInput();
+            }
+        }
+        else {
+            if (k.keyCode != 32 && k.keyCode != 87) {
                 old_onkeyup(k);
             }
         }
